@@ -1,6 +1,5 @@
 import 'package:app_minhascompras/model/Produtos.dart';
 import 'package:app_minhascompras/screens/home.dart';
-import 'package:app_minhascompras/screens/tela_produtos.dart';
 import 'package:app_minhascompras/screens/util/ProdutosHelpers.dart';
 
 import 'package:flutter/material.dart';
