@@ -1,6 +1,5 @@
 import 'package:app_minhascompras/model/Produtos.dart';
 
-
 import 'package:flutter/material.dart';
 
 import 'tela_cadastro.dart';
@@ -15,22 +14,22 @@ class TelaProdutos extends StatefulWidget {
 
 class _TelaProdutosState extends State<TelaProdutos> {
   //1 Passo - é criar essa lista de objetos do tipo Produto
-  List<Produtos> listadeprodutos = List<Produtos>();
+  // ignore: deprecated_member_use
+  List<Produtos>? listadeprodutos = <Produtos>[];
 
   ProdutosHelpers db = ProdutosHelpers();
 
-  TextEditingController txtnome =TextEditingController();
-  TextEditingController txtfabricante =TextEditingController();
-  TextEditingController txtpreco =TextEditingController();
+  TextEditingController txtnome = TextEditingController();
+  TextEditingController txtfabricante = TextEditingController();
+  TextEditingController txtpreco = TextEditingController();
 
-  
   void recuperarProdutos() async {
     List produtosRecuperados = await db.listarProdutos();
 
     //print("Produtos cadastrados: " + produtosRecuperados.toString());
 
     //2 Passo - É converter os itens da lista produtosRecuperados, para a lista de objetos do tipo Produto
-    List<Produtos> listatemporaria = List<Produtos>();
+    List<Produtos> listatemporaria = <Produtos>[];
 
     for (var item in produtosRecuperados) {
       Produtos obj = Produtos.deMapParaModel(item);
@@ -45,32 +44,25 @@ class _TelaProdutosState extends State<TelaProdutos> {
   //Metodo que remover um produto
   void removerProduto(int id) async {
     int resultado = await db.excluirProduto(id);
-    
-    
-     recuperarProdutos();
+
+    recuperarProdutos();
   }
 
-
   void editarProduto(Produtos obj) async {
-
     obj.nome = txtnome.text;
     obj.fornecedor = txtfabricante.text;
     obj.preco = double.parse(txtpreco.text);
 
     int resultado = await db.alterarProduto(obj);
 
-    if(resultado != null) {
+    if (resultado != null) {
       print("Dados alterados com sucesso");
-    }else{
+    } else {
       print("Erro ao alterar os dados");
     }
-
-
   }
 
-
-
-  void exibirtelaconfirma(int id) {
+  void exibirtelaconfirma(int? id) {
     showDialog(
         context: context,
         builder: (context) {
@@ -83,7 +75,7 @@ class _TelaProdutosState extends State<TelaProdutos> {
                   child: Text("SIM"),
                   onPressed: () {
                     print("Clicou no SIM DA CAIXA DE DIALOGO");
-                    removerProduto(id);
+                    removerProduto(id!);
                     Navigator.pop(context);
                   },
                   style: TextButton.styleFrom(
@@ -101,7 +93,6 @@ class _TelaProdutosState extends State<TelaProdutos> {
           );
         });
   }
-  
 
   @override
   void initState() {
@@ -121,13 +112,14 @@ class _TelaProdutosState extends State<TelaProdutos> {
           children: [
             Expanded(
                 child: ListView.builder(
-                    itemCount: listadeprodutos.length,
+                    itemCount: listadeprodutos!.length,
                     itemBuilder: (context, index) {
-                      final Produtos p = listadeprodutos[index];
+                      Produtos? p = listadeprodutos![index];
+
                       return Card(
                         child: ListTile(
                             title: Text(
-                              p.nome,
+                              p.nome.toString(),
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
@@ -153,8 +145,11 @@ class _TelaProdutosState extends State<TelaProdutos> {
                                 GestureDetector(
                                   onTap: () {
                                     print("Clicou no Editar!");
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TelaCadastro(produto: p)));                                
-       
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                TelaCadastro(produto: p)));
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 16),

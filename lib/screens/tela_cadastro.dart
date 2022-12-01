@@ -8,7 +8,7 @@ class TelaCadastro extends StatefulWidget {
   @override
   _TelaCadastroState createState() => _TelaCadastroState();
 
-  Produtos produto;
+  Produtos? produto;
 
   //Definindo um construtor para a classe TelaCadastro
   TelaCadastro({this.produto});
@@ -24,9 +24,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
   String textoBotao = "Adicionar um Produto";
   String textoAppbar = "Cadastro de Produto";
 
-  int idproduto;
+  int? idproduto;
 
-  void salvarProduto({Produtos p}) async {
+  void salvarProduto({Produtos? p}) async {
     int resultado;
 
     //Esta cadastrando um novo produto
@@ -71,11 +71,11 @@ class _TelaCadastroState extends State<TelaCadastro> {
     super.initState();
 
     if (widget.produto != null) {
-      txtnome.text = widget.produto.nome;
-      txtfornecedor.text = widget.produto.fornecedor;
-      txtpreco.text = widget.produto.preco.toString();
+      txtnome.text = widget.produto!.nome!;
+      txtfornecedor.text = widget.produto!.fornecedor!;
+      txtpreco.text = widget.produto!.preco.toString();
 
-      idproduto = widget.produto.id;
+      idproduto = widget.produto!.id;
 
       textoBotao = "Editar Produto";
       textoAppbar = "Editar Produto";
